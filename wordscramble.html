@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Word Scramble Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 100px;
+            background-color: #f0f8ff;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        input, button {
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 1em;
+        }
+        .scrambled {
+            font-size: 1.5em;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+        .message {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Word Scramble</h1>
+        <div class="scrambled" id="scrambledWord">Loading...</div>
+        <input type="text" id="guessInput" placeholder="Your guess here">
+        <br>
+        <button onclick="checkGuess()">Submit</button>
+        <button onclick="newWord()">New Word</button>
+        <div class="message" id="message"></div>
+    </div>
+
+    <script>
+        const words = ["planet", "javascript", "galaxy", "nebula", "comet", "astronaut", "telescope"];
+        let currentWord = "";
+        let scrambled = "";
+
+        function shuffleWord(word) {
+            return word.split('').sort(() => Math.random() - 0.5).join('');
+        }
+
+        function newWord() {
+            currentWord = words[Math.floor(Math.random() * words.length)];
+            scrambled = shuffleWord(currentWord);
+            while (scrambled === currentWord) {
+                scrambled = shuffleWord(currentWord);
+            }
+            document.getElementById("scrambledWord").textContent = scrambled;
+            document.getElementById("message").textContent = "";
+            document.getElementById("guessInput").value = "";
+        }
+
+        function checkGuess() {
+            const guess = document.getElementById("guessInput").value.toLowerCase();
+            const message = document.getElementById("message");
+            if (guess === currentWord) {
+                message.textContent = "🎉 Correct! Great job!";
+                message.style.color = "green";
+            } else {
+                message.textContent = "❌ Try again!";
+                message.style.color = "red";
+            }
+        }
+
+        window.onload = newWord;
+    </script>
+</body>
+</html>
